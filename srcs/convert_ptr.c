@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   convert_ptr.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtournay <mtournay@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mtournay <mtournay@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 12:19:07 by mtournay          #+#    #+#             */
-/*   Updated: 2021/05/24 17:11:00 by mtournay         ###   ########.fr       */
+/*   Updated: 2021/05/25 11:21:39 by mtournay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	*convert_ptr(t_type *type)
 	temp = ft_itoa_base((unsigned long long int)type->p, "0123456789abcdef");
 	if (!temp)
 		return (NULL);
-	str = malloc(sizeof(char) * (ft_strlen(temp) + 2));
+	str = malloc(sizeof(char) * (ft_strlen(temp) + 10));
 	if (!str)
 		return (NULL);
 	str[0] = '0';

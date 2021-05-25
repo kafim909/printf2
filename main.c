@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtournay <mtournay@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mtournay <mtournay@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 07:55:07 by mtournay          #+#    #+#             */
-/*   Updated: 2021/05/25 10:53:08 by mtournay         ###   ########.fr       */
+/*   Updated: 2021/05/25 11:23:23 by mtournay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,8 @@ int main()
 
 	// printf("\n\n");
 	
-	printf(" [%d]\n", printf(" %d ", 0));
-	printf(" [%d]\n", ft_printf(" %d ", 0));
-	system("leaks a.out");
+	printf(" [%d]\n", printf(" %10p %-10p ", 0, 0));
+	printf(" [%d]\n", ft_printf(" %10p %-10p ", 0, 0));
 	
 	// printf("\n\n");
 	// printf("\n\n");

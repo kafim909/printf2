@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   type_convert.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtournay <mtournay@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mtournay <mtournay@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 10:02:13 by mtournay          #+#    #+#             */
-/*   Updated: 2021/05/24 18:51:24 by mtournay         ###   ########.fr       */
+/*   Updated: 2021/05/25 11:19:25 by mtournay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,7 @@
 
 static char	*type_convert_2(t_type *type, t_flags *flags, char **str)
 {
-	if (type->i || type->d_bol)
-		*str = convert_int(type, flags);
-	else if (type->modulo)
+	if (type->modulo)
 		*str = convert_modulo();
 	else if (type->p || type->p_bol)
 		*str = convert_ptr(type);
@@ -44,7 +42,7 @@ char	*type_convert(t_type *type, t_flags *flags)
 		return (str);
 	if (type->c || type->c_bol)
 		str = convert_char(type);
-	else if (type->d || type->d_bol)
+	else if (type->d || type->i || type->d_bol)
 		str = convert_int(type, flags);
 	else if (type->HEX || type->X_bol)
 		str = convert_x(type);
