@@ -6,25 +6,16 @@
 /*   By: mtournay <mtournay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 14:13:54 by mtournay          #+#    #+#             */
-/*   Updated: 2021/05/25 17:37:42 by mtournay         ###   ########.fr       */
+/*   Updated: 2021/05/25 18:13:29 by mtournay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int	width_noflags_noprec(t_var *var)
+static int	process(t_var *var, int len, int i, int j)
 {
-	int 	len;
 	char	*temp;
-	int 	i;
-	int 	j;
 
-	i = 0;
-	j = 0;
-	len = ft_strlen(VU->str);
-	VF->width_size -= len;
-	if (VF->width_size < 0)
-		VF->width_size = 0;
 	temp = malloc(sizeof(char) * (len + VF->width_size + 2));
 	if (!temp)
 		return (0);
@@ -40,4 +31,19 @@ int	width_noflags_noprec(t_var *var)
 	temp[i] = '\0';
 	VU->str = temp;
 	return (1);
+}
+
+int	width_noflags_noprec(t_var *var)
+{
+	int		len;
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	len = ft_strlen(VU->str);
+	VF->width_size -= len;
+	if (VF->width_size < 0)
+		VF->width_size = 0;
+	return (process(var, len, i, j));
 }

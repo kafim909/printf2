@@ -6,7 +6,7 @@
 /*   By: mtournay <mtournay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/25 13:15:28 by mtournay          #+#    #+#             */
-/*   Updated: 2021/05/25 18:04:35 by mtournay         ###   ########.fr       */
+/*   Updated: 2021/05/25 18:48:32 by mtournay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 void	init_utils(t_var *var)
 {
-    ix = 0;
-    null_char = 0;
-    VU->temp = NULL;
+	VU->len = 0;
+	ix = 0;
+	VU->temp = NULL;
 	VU->str = NULL;
 }
 
