@@ -3,40 +3,41 @@
 /*                                                        :::      ::::::::   */
 /*   width_noflags_noprec.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtournay <mtournay@student.s19.be>         +#+  +:+       +#+        */
+/*   By: mtournay <mtournay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 14:13:54 by mtournay          #+#    #+#             */
-/*   Updated: 2021/05/24 12:33:42 by mtournay         ###   ########.fr       */
+/*   Updated: 2021/05/25 17:37:42 by mtournay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-char	*width_noflags_noprec(int width, char *data_type)
+int	width_noflags_noprec(t_var *var)
 {
 	int 	len;
-	char	*str;
+	char	*temp;
 	int 	i;
 	int 	j;
 
 	i = 0;
 	j = 0;
-	len = ft_strlen(data_type);
-	width -= len;
-	if (width < 0)
-		width = 0;
-	str = malloc(sizeof(char) * (len + width + 2));
-	if (!str)
-		return (NULL);
-	if (width)
-		while (i < width)
-			str[i++] = ' ';
-	if (data_type)
-		while (data_type[j])
-			str[i++] = data_type[j++];
+	len = ft_strlen(VU->str);
+	VF->width_size -= len;
+	if (VF->width_size < 0)
+		VF->width_size = 0;
+	temp = malloc(sizeof(char) * (len + VF->width_size + 2));
+	if (!temp)
+		return (0);
+	if (VF->width_size)
+		while (i < VF->width_size)
+			temp[i++] = ' ';
+	if (VU->str)
+		while ((VU->str)[j])
+			temp[i++] = (VU->str)[j++];
 	else
-		str[i++] = '\0';
-	free(data_type);
-	str[i] = '\0';
-	return (str);
+		temp[i++] = '\0';
+	free(VU->str);
+	temp[i] = '\0';
+	VU->str = temp;
+	return (1);
 }

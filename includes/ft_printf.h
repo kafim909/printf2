@@ -6,7 +6,7 @@
 /*   By: mtournay <mtournay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/30 11:33:32 by mtournay          #+#    #+#             */
-/*   Updated: 2021/05/25 11:01:39 by mtournay         ###   ########.fr       */
+/*   Updated: 2021/05/25 18:04:23 by mtournay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,20 @@
 #include <stdio.h>
 #include <unistd.h>
 #include "../libft/libft.h"
+
+#define VT var->type
+#define VF var->flags
+#define VU var->utils
+#define ix var->utils->i
+#define null_char var->utils->char_zero
+
+typedef struct      s_utils
+{   
+    char            *str;
+    int 	        i;
+	char 	        *temp;
+	int 	        char_zero;
+}                   t_utils;
 
 typedef struct 		s_type
 {
@@ -50,37 +64,45 @@ typedef struct 	s_flags
 	int 		wd_prec;
 }				t_flags;
 
-int	    bolcheck(t_type *type);
+typedef struct      s_var
+{
+    t_utils         *utils;
+    t_type 	        *type;
+	t_flags     	*flags;
+}                   t_var;
+
+int	    bolcheck(t_var *var);
 int     ft_printf(const char *s, ...);
 int     is_type(char c);
-t_flags   *init_flags(t_flags *flag);
-t_type    *init_type(t_type *types);
-t_flags   *parse_flags(char *input, int i, va_list args, t_flags *flags);
-t_type    *parse_type(char c, va_list args, t_type *type);
-char    *type_convert(t_type *type, t_flags *flags);
+void    init_utils(t_var *var);
+void    init_type(t_var *var);
+void    init_flags(t_var *var);
+t_var	*parse_flags(char *input, int i, va_list args, t_var *var);
+t_var	*parse_type(char c, va_list args, t_var *var);
+int	    type_convert(t_var *var);
 char	*ft_itoa_base(unsigned long long nbr, char *base);
+char	*unsigned_itoa(unsigned int n);
 int     one_to_nine(char c);
 
-char	*convert_int(t_type *type, t_flags *flags);
-char    *convert_char(t_type *type);
-char	*convert_x(t_type *type);
-char	*convert_modulo(void);
-char	*convert_ptr(t_type *type);
-char	*convert_str(t_type *type);
-char	*convert_unsigned(t_type *type);
+int	    convert_int(t_var *var);
+int	    convert_char(t_var *var);
+int	    convert_x(t_var *var);
+int	    convert_modulo(t_var *var);
+int	    convert_ptr(t_var *var);
+int	    convert_str(t_var *var);
+int	    convert_unsigned(t_var *var);
 
-char	*unsigned_itoa(unsigned int n);
-char	*data_flag_convert(t_flags *flags, char *type_data, t_type *type);
-char	*width_noflags_noprec(int width, char *data_type);
-char	*width_minus_noprec(int width, char *data_type, t_type *types);
-char	*width_zero_noprec(int width, char *data_type, int minus);
-char	*width_prec_str(int width, int prec, char *type_data);
-char	*width_noflags_prec(int width, int prec, char *type_data, int minus);
-char	*width_minus_prec(int width, int prec, char *type_data, int minus, t_type *type);
-char	*width_minus_prec_str(int width, int prec, char *type_data, t_type *types);
-char	*width_zero_prec(int width, int prec, char *type_data, int i);
-char	*prec_width(int prec, char *type_data, int minus);
-char	*prec_width_str(int width, int prec, char *type_data);
+int	    data_flag_convert(t_var *var);
+int	    width_noflags_noprec(t_var *var);
+int	    width_minus_noprec(t_var *var);
+int	    width_zero_noprec(t_var *var);
+int	    width_prec_str(t_var *var);
+int	    width_noflags_prec(t_var *var);
+int	    width_minus_prec(t_var *var);
+int	    width_zero_prec(t_var *var);
+int	    width_minus_prec_str(t_var *var);
+int	    prec_width(t_var *var);
+int	    prec_width_str(t_var *var);
 char	*join(char **s1,char **s2);
 
 #endif 

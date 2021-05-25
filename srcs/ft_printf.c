@@ -6,7 +6,7 @@
 /*   By: mtournay <mtournay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 12:36:21 by mtournay          #+#    #+#             */
-/*   Updated: 2021/05/25 11:05:09 by mtournay         ###   ########.fr       */
+/*   Updated: 2021/05/25 17:14:38 by mtournay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,83 +14,90 @@
 
 int	ft_printf(const char *s, ...)
 {
-	int 	i;
-	int		start;
-	char 	*temp;
-	char	*data;
+	t_var	*var;
 	va_list args;
-    t_type 	*ptr_type;
-	t_flags	*ptr_flags;
-	size_t	len;
-	int 	null_char;
+	int 	start;
+	int 	ret;
 
-	i = 0;
 	start = 0;
-	len = 0;
-	temp = NULL;
-	data = NULL;
-	null_char = 0;
+	ret = 0;
+	var = malloc(sizeof(t_var));
+	VF = malloc(sizeof(t_flags));
+	VU = malloc(sizeof(t_utils));
+	VT = malloc(sizeof(t_type));
+	// if (!var)
+	// 	return (-1);
     va_start(args, s);
-	ptr_type = malloc(sizeof(t_type));
-	ptr_flags = malloc(sizeof(t_flags));
-	while (s[i])
-	{
-		ptr_flags = init_flags(ptr_flags);
-		ptr_type = init_type(ptr_type);
-		start = i;
-		while (s[i] && s[i] != '%')
-			i++;
-		if (start != i)
+	init_utils(var);
+	while (s[ix])
+	{	
+		init_flags(var);
+		init_type(var);
+		start = ix;
+		while (s[ix] && s[ix] != '%')
+			ix++;
+		if (start != ix)
 		{
-			temp = ft_substr((char *)s, start, i - start);
-			ft_putstr(temp); 
-			len += ft_strlen(temp); 
-			free(temp);
-			temp = NULL;
+			VU->temp = ft_substr((char *)s, start, ix - start);
+			ft_putstr(VU->temp); 
+			ret += ft_strlen(VU->temp); 
+			free(VU->temp);
+			VU->temp = NULL;
 		}      		
-		if (s[i] == '%')
+		if (s[ix] == '%')
 		{
-			ptr_flags = parse_flags((char *)s, i, args, ptr_flags);
-			i++;
+			var = parse_flags((char *)s, ix, args, var);
+			ix++;
 		}
-		while (s[i] && !is_type(s[i]))
-			i++;
-		if (is_type(s[i]))
+		while (s[ix] && !is_type(s[ix]))
+			ix++;
+		if (is_type(s[ix]))
 		{
-			ptr_type = parse_type(s[i], args, ptr_type);
-			if (ptr_flags->width_size && ptr_type->c_bol)
-				ptr_flags->width_size--;
-			if (ptr_flags->wd_prec && ptr_flags->prec < 0)
+			var = parse_type(s[ix], args, var);
+			if (VF->width_size && VT->c_bol)
 			{
-				ptr_flags->prec = 0;
-				ptr_flags->period = 0;
-				ptr_flags->wd_prec = 0;
+				VF->width_size--;
+				if (!VF->width_size)
+					ft_putchar('\0');
 			}
-			data = type_convert(ptr_type, ptr_flags);
-			data = data_flag_convert(ptr_flags, data, ptr_type);
+			if (VF->wd_prec && VF->prec < 0)
+			{
+				VF->prec = 0;
+				VF->period = 0;
+				VF->wd_prec = 0;
+			}
+			if (!type_convert(var))
+				return (-1);
+			if (!data_flag_convert(var))
+				return (-1);
 		}
-		if (data || bolcheck(ptr_type))
+		if (VU->str || bolcheck(var))
 		{
-			ft_putstr(data);
-			len += ft_strlen(data); 
-			free(data);
-			data = NULL;
+			ft_putstr(VU->str);
+			if (VT->c_bol && !VF->minus)
+				ft_putchar('\0');
+			ret += ft_strlen(VU->str); 
+			free(VU->str);
+			VU->str = NULL;
 		}
-		if (s[i])
-			i++;
-		len += ptr_type->c_bol;
-		null_char += ptr_type->c_bol;
+		if (s[ix])
+			ix++;
+		ret += VT->c_bol;
+		null_char += VT->c_bol;
 	}
 	va_end(args);
-	if (ptr_type->c_bol && !ptr_flags->minus)
-	{
-		while (null_char)
-		{
-			ft_putchar('\0');
-			null_char--;
-		}
-	}
-	free(ptr_flags);
-	free(ptr_type);
-	return ((int)len);
+	// if (ptr_type->c_bol && !ptr_flags->minus)
+	// {
+	// 	while (null_char)
+	// 	{
+	// 		ft_putchar('\0');
+	// 		null_char--;
+	// 	}
+	// }
+	free(VF);
+	free(VU);
+	free(VT);
+	free(var);
+	// printf("coucou\n");
+	return (ret);
 }

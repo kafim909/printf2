@@ -6,28 +6,25 @@
 /*   By: mtournay <mtournay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 10:20:06 by mtournay          #+#    #+#             */
-/*   Updated: 2021/05/24 17:07:09 by mtournay         ###   ########.fr       */
+/*   Updated: 2021/05/25 15:56:42 by mtournay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-char	*convert_x(t_type *type)
+int	convert_x(t_var *var)
 {
-	char	*str;
-
-	str = NULL;
-	if (type->HEX || type->X_bol)
+	if (VT->HEX || VT->X_bol)
 	{
-		str = ft_itoa_base(type->HEX, "0123456789ABCDEF");
-		if (!str)
-			return (NULL);
+		VU->str = ft_itoa_base(VT->HEX, "0123456789ABCDEF");
+		if (!VU->str)
+			return (0);
 	}
-	if (type->hex || type->x_bol)
+	if (VT->hex || VT->x_bol)
 	{
-		str = ft_itoa_base(type->hex, "0123456789abcdef");
-		if (!str)
-			return (NULL);
+		VU->str = ft_itoa_base(VT->hex, "0123456789abcdef");
+		if (!VU->str)
+			return (0);
 	}
-	return (str);
+	return (1);
 }

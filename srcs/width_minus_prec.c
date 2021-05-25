@@ -6,40 +6,43 @@
 /*   By: mtournay <mtournay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 09:46:53 by mtournay          #+#    #+#             */
-/*   Updated: 2021/05/24 18:23:53 by mtournay         ###   ########.fr       */
+/*   Updated: 2021/05/25 15:58:01 by mtournay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-char	*width_minus_prec(int width, int prec, char *type_data, int minus, t_type *type)
+int	width_minus_prec(t_var *var)
 {
 	int 	i;
 	int 	j;
 	size_t	len;
-	char 	*str;
+	char 	*temp;
 
 	i = 0;
 	j = 0;
-	len = ft_strlen(type_data);
-	if (len > (size_t)prec)
-		return (width_minus_noprec(width, type_data, type));
-	if (len > (size_t)width)
-		width = (int)len;
-	str = malloc(sizeof(char) * (width + 2 + minus));
-	if (minus)
+	len = ft_strlen(VU->str);
+	if (len > (size_t)VF->prec)
+		return (width_minus_noprec(var));
+	if (len > (size_t)VF->width_size)
+		VF->width_size = (int)len;
+	temp = malloc(sizeof(char) * (VF->width_size + 2 + VT->minus_d));
+	if (!temp)
+		return (0);
+	if (VT->minus_d)
 	{
-		str[i++] = type_data[j++];
-		minus++;
+		temp[i++] = (VU->str)[j++];
+		VT->minus_d++;
 	}
-	while (i < (prec - (int)len + minus))
-		str[i++] = '0';
-	if (type_data)
-		while (type_data[j])
-			str[i++] = type_data[j++];
-	while (i < width)
-		str[i++] = ' ';
-	str[i] = '\0';
-	free(type_data);
-	return (str);
+	while (i < (VF->prec - (int)len + VT->minus_d))
+		temp[i++] = '0';
+	if (VU->str)
+		while ((VU->str)[j])
+			temp[i++] = (VU->str)[j++];
+	while (i < VF->width_size)
+		temp[i++] = ' ';
+	temp[i] = '\0';
+	free(VU->str);
+	VU->str = temp;
+	return (1);
 }

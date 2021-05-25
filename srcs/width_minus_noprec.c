@@ -6,46 +6,47 @@
 /*   By: mtournay <mtournay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 14:49:51 by mtournay          #+#    #+#             */
-/*   Updated: 2021/05/25 10:48:59 by mtournay         ###   ########.fr       */
+/*   Updated: 2021/05/25 15:58:10 by mtournay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static char	*process(int width, char *data_type, t_type *types, char **str)
+static int	process(t_var *var, char **temp)
 {
 	int	i;
 
 	i = 0;
-	if (types->c_bol)
+	if (VT->c_bol)
 		ft_putchar('\0');
-	if (data_type && !types->c_bol)
+	if (VU->str && !VT->c_bol)
 	{
-		while (data_type[i])
+		while ((VU->str[i]))
 		{
-			(*str)[i] = data_type[i];
+			(*temp)[i] = (VU->str)[i];
 			i++;
 		}
 	}
-	if (width)
-		while (i < width)
-			(*str)[i++] = ' ';
-	free(data_type);
-	(*str)[i] = '\0';
-	return (*str);
+	if (VF->width_size)
+		while (i < VF->width_size)
+			(*temp)[i++] = ' ';
+	free(VU->str);
+	(*temp)[i] = '\0';
+	VU->str = *temp;
+	return (1);
 }
 
-char	*width_minus_noprec(int width, char *data_type, t_type *types)
+int	width_minus_noprec(t_var *var)
 {
 	int		len;
-	char	*str;
+	char	*temp;
 
-	str = NULL;
-	len = ft_strlen(data_type);
-	if ((width - len) < 0)
-		width = 0;
-	str = malloc(sizeof(char) * (len + width + 2));
-	if (!str)
-		return (NULL);
-	return (process(width, data_type, types, &str));
+	temp = NULL;
+	len = ft_strlen(VU->str);
+	if ((VF->width_size - len) < 0)
+		VF->width_size = 0;
+	temp = malloc(sizeof(char) * (len + VF->width_size + 2));
+	if (!temp)
+		return (0);
+	return (process(var, &temp));
 }

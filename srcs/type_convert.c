@@ -3,50 +3,54 @@
 /*                                                        :::      ::::::::   */
 /*   type_convert.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtournay <mtournay@student.s19.be>         +#+  +:+       +#+        */
+/*   By: mtournay <mtournay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 10:02:13 by mtournay          #+#    #+#             */
-/*   Updated: 2021/05/25 11:19:25 by mtournay         ###   ########.fr       */
+/*   Updated: 2021/05/25 17:09:29 by mtournay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static char	*type_convert_2(t_type *type, t_flags *flags, char **str)
+static int	type_convert_2(t_var *var)
 {
-	if (type->modulo)
-		*str = convert_modulo();
-	else if (type->p || type->p_bol)
-		*str = convert_ptr(type);
-	else if (type->s || type->s_bol)
-		*str = convert_str(type);
-	else if (type->u || type->u_bol)
+	if (VT->modulo)
+		if (!convert_modulo(var))
+			return(0);
+	if (VT->p || VT->p_bol)
+		if (!convert_ptr(var))
+			return (0);
+	if (VT->s || VT->s_bol)
+		if  (!convert_str(var))
+			return (0);
+	if (VT->u || VT->u_bol)
 	{
-		if (flags->period && !flags->prec && type->u_bol)
-			return (*str);
-		*str = convert_unsigned(type);
+		if (VF->period && !VF->prec && VT->u_bol)
+			return (1);
+		if (!convert_unsigned(var))
+			return (0);
 	}
-	return (*str);
+	return (1);
 }
 
-char	*type_convert(t_type *type, t_flags *flags)
+int	type_convert(t_var *var)
 {
-	char	*str;
-
-	str = NULL;
-	if ((type->s && flags->zero && flags->period)
-		|| (type->s && flags->period && !flags->prec && !flags->width_size))
-		return (str);
-	if (flags->period && !flags->prec && (type->x_bol || type->X_bol
-			|| type->d_bol))
-		return (str);
-	if (type->c || type->c_bol)
-		str = convert_char(type);
-	else if (type->d || type->i || type->d_bol)
-		str = convert_int(type, flags);
-	else if (type->HEX || type->X_bol)
-		str = convert_x(type);
-	else if (type->hex || type-> x_bol)
-		str = convert_x(type);
-	return (type_convert_2(type, flags, &str));
+	if ((VT->s && VF->zero && VF->period)
+		|| (VT->s && VF->period && !VF->prec && !VF->width_size)
+		|| (VF->period && !VF->prec && (VT->x_bol || VT->X_bol
+			|| VT->d_bol)))
+		return (1);
+	if (VT->c || VT->c_bol)
+		if (!convert_char(var))
+			return(0);
+	if (VT->d || VT->i || VT->d_bol)
+		if(!convert_int(var))
+			return (0);
+	if (VT->HEX || VT->X_bol)
+		if (!convert_x(var))
+			return (0);
+	if (VT->hex || VT-> x_bol)
+		if (!convert_x(var))
+			return (0);
+	return (type_convert_2(var));
 }

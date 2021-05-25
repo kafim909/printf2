@@ -3,31 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   convert_int.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtournay <mtournay@student.s19.be>         +#+  +:+       +#+        */
+/*   By: mtournay <mtournay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 10:14:33 by mtournay          #+#    #+#             */
-/*   Updated: 2021/05/25 11:16:10 by mtournay         ###   ########.fr       */
+/*   Updated: 2021/05/25 15:56:45 by mtournay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-char	*convert_int(t_type *type, t_flags *flags)
+int	convert_int(t_var *var)
 {
-	char	*str;
-
-	str = NULL;
-	if (flags->period && !flags->prec && !type->d && type->d_bol)
+	if (VF->period && !VF->prec && !VT->d && VT->d_bol)
 	{
-		str = malloc(sizeof(char) * 1);
-		if (!str)
-			return (NULL);
-		str[0] = '\0';
-		return (str);
+		VU->str = malloc(sizeof(char) * 1);
+		if (!VU->str)
+			return (0);
+		VU->str[0] = '\0';
+		return (1);
 	}
-	if (type->d || type->d_bol)
-		str = ft_itoa(type->d);
-	if (type->i)
-		str = ft_itoa(type->i);
-	return (str);
+	if (VT->d || VT->d_bol)
+	{
+		VU->str = ft_itoa(VT->d);
+		if (!VU->str)
+			return (0);
+	}
+	if (VT->i)
+	{
+		VU->str = ft_itoa(VT->i);
+		if (!VU->str)
+			return (0);
+	}
+	return (1);
 }

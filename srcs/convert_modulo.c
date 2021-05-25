@@ -6,20 +6,18 @@
 /*   By: mtournay <mtournay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 12:13:40 by mtournay          #+#    #+#             */
-/*   Updated: 2021/05/24 17:10:32 by mtournay         ###   ########.fr       */
+/*   Updated: 2021/05/25 15:56:48 by mtournay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-char	*convert_modulo(void)
+int	convert_modulo(t_var *var)
 {
-	char	*str;
-
-	str = malloc(sizeof(char) * 2);
-	if (!str)
-		return (NULL);
-	str[0] = '%';
-	str[1] = '\0';
-	return (str);
+	VU->str = malloc(sizeof(char) * 2);
+	if (!VU->str)
+		return (0);
+	VU->str[0] = '%';
+	VU->str[1] = '\0';
+	return (1);
 }

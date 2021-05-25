@@ -6,7 +6,7 @@
 /*   By: mtournay <mtournay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/03 14:51:27 by mtournay          #+#    #+#             */
-/*   Updated: 2021/05/25 11:01:27 by mtournay         ###   ########.fr       */
+/*   Updated: 2021/05/25 15:52:51 by mtournay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,21 +29,21 @@ int	one_to_nine(char c)
 		return (0);
 }
 
-int	bolcheck(t_type *type)
+int	bolcheck(t_var *var)
 {
-	if (type->c_bol)
+	if (VT->c_bol)
 		return (1);
-	if (type->d_bol)
+	if (VT->d_bol)
 		return (1);
-	if (type->p_bol)
+	if (VT->p_bol)
 		return (1);
-	if (type->s_bol)
+	if (VT->s_bol)
 		return (1);
-	if (type->u_bol)
+	if (VT->u_bol)
 		return (1);
-	if (type->X_bol)
+	if (VT->X_bol)
 		return (1);
-	if (type->x_bol)
+	if (VT->x_bol)
 		return (1);
 	return (0);
 }

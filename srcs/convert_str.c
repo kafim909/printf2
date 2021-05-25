@@ -6,43 +6,41 @@
 /*   By: mtournay <mtournay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 12:22:30 by mtournay          #+#    #+#             */
-/*   Updated: 2021/05/24 17:11:42 by mtournay         ###   ########.fr       */
+/*   Updated: 2021/05/25 16:50:35 by mtournay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static char	*if_null(char *str)
+static int	if_null(t_var *var)
 {
 	char	*s1;
 	int		i;
 
 	i = -1;
 	s1 = "(null)";
-	str = malloc(sizeof(char) * 20);
+	VU->str = malloc(sizeof(char) * 20);
 	while (s1[++i])
-		str[i] = s1[i];
-	str[i] = '\0';
-	return (str);
+		(VU->str)[i] = s1[i];
+	(VU->str)[i] = '\0';
+	return (1);
 }
 
-char	*convert_str(t_type *type)
+int	convert_str(t_var *var)
 {
-	char	*str;
 	int		i;
 
 	i = 0;
-	str = NULL;
-	if (type->s_bol)
-		return (if_null(str));
-	str = malloc(sizeof(char) * ft_strlen(type->s) + 1);
-	if (str == NULL)
-		return (NULL);
-	while ((type->s)[i])
+	if (VT->s_bol)
+		return (if_null(var));
+	VU->str = malloc(sizeof(char) * ft_strlen(VT->s) + 1);
+	if (!VU->str)
+		return (0);
+	while ((VT->s)[i])
 	{
-		str[i] = (type->s)[i];
+		(VU->str)[i] = (VT->s)[i];
 		i++;
 	}
-	str[i] = '\0';
-	return (str);
+	(VU->str)[i] = '\0';
+	return (1);
 }

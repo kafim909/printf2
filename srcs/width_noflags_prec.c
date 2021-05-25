@@ -6,51 +6,51 @@
 /*   By: mtournay <mtournay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 09:33:30 by mtournay          #+#    #+#             */
-/*   Updated: 2021/05/24 16:17:33 by mtournay         ###   ########.fr       */
+/*   Updated: 2021/05/25 17:39:56 by mtournay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-char	*width_noflags_prec(int width, int prec, char *type_data, int minus)
+int	width_noflags_prec(t_var *var)
 {
 	int 	i;
 	int 	j;
 	size_t	len;
-	char 	*str;
-
+	char 	*temp;
 	i = 0;
 	j = 0;
-	len = ft_strlen(type_data);
-	if ((len > (size_t)prec) || (!prec && minus))
-		return (width_noflags_noprec(width, type_data));
-	if (len > (size_t)width)
-		width = len;
-	if (prec == width)
+	len = ft_strlen(VU->str);
+	if ((len > (size_t)VF->prec) || (!VF->prec && VT->minus_d))
+		return (width_noflags_noprec(var));
+	if (len > (size_t)VF->width_size)
+		VF->width_size = len;
+	if (VF->prec == VF->width_size)
 	{
-		if (minus)
+		if (VT->minus_d)
 		{
-			prec++;
-			minus++;
+			VF->prec++;
+			VT->minus_d++;
 		}
 		else
-			prec++;
+			VF->prec++;
 	}
-	if (len > (size_t)prec)
-		width--;
-	str = malloc(sizeof(char) * (width + 1 + minus));
-	if (!str)
-		return (NULL);
-	while (i < (width - prec - minus))
-		str[i++] = ' ';
-	if (minus)
-		str[i++] = type_data[j++];
-	while (i < (width - (int)len + minus))
-		str[i++] = '0';
-	if(type_data)
-		while (type_data[j])
-			str[i++] = type_data[j++];
-	free(type_data);
-	str[i] = '\0';
-	return (str);
+	if (len > (size_t)VF->prec)
+		VF->width_size--;
+	temp = malloc(sizeof(char) * (VF->width_size + 1 + VT->minus_d));
+	if (!temp)
+		return (0);
+	while (i < (VF->width_size - VF->prec - VT->minus_d))
+		temp[i++] = ' ';
+	if (VT->minus_d)
+		temp[i++] = (VU->str)[j++];
+	while (i < (VF->width_size - (int)len + VT->minus_d))
+		temp[i++] = '0';
+	if(VU->str)
+		while ((VU->str)[j])
+			temp[i++] = (VU->str)[j++];
+	free(VU->str);
+	temp[i] = '\0';
+	VU->str = temp;
+	return (1);
 }
